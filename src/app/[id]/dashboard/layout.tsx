@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-
+import DisplayWallet from "@/components/DisplayWallet";
 import Link from "next/link";
 function Dasnboard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -18,39 +18,51 @@ function Dasnboard({ children }: { children: React.ReactNode }) {
   if (!account) {
     router.push("/");
   }
-  useEffect(() => {
-    if (account) {
-      getBalance(account.address).then((dato) => {
-        setBalance(dato);
-      });
-    }
-  }, [account, account?.address]);
+    useEffect(() => {
+      if (account) {
+        getBalance(account.address).then((dato) => {
+          setBalance(dato);
+        });
+      }
+      router.push(`/${params.id}/dashboard/moviments`);
+    }, [account, account?.address, params.id, router]);
 
-  if (!account) {
-    return <div>Loading...</div>;
-  }
   return (
     <div className="container mx-auto">
-      <Badge className="p-3 text-base mt-5 mr-5 mb-5">{account.address}</Badge>
-      <Badge className="p-3 text-base mt-5 mb-5">Balance: {balance}</Badge>
+      <div className="flex justify-between flex-1">
+        <div>
+          <Badge className="p-3 text-base mt-5 mr-5 mb-5">
+            {params.id} {account.address}
+          </Badge>
+         
+        </div>
+        <div>
+          <DisplayWallet />
+        </div>  
+      </div>
       <ul className="flex mt-5 mb-5 space-x-4">
         <li>
-          <Button variant="outline">
-            <Link href={`/${params.id}/dashboard/moviments`}>Moviments</Link>
+          <Button variant="outline" className="cc-azul text-white">
+            <Link href={`/${params.id}/dashboard/balance`}>Balance</Link>
           </Button>
         </li>
         <li>
-          <Button variant="outline">
+          <Button variant="outline" className="cc-azul text-white">
+            <Link href={`/${params.id}/dashboard/moviments`}>Movements</Link>
+          </Button>
+        </li>
+        <li>
+          <Button variant="outline" className="cc-azul text-white">
             <Link href={`/${params.id}/dashboard/deposit`}>Deposit</Link>
           </Button>
         </li>
         <li>
-          <Button variant="outline">
+          <Button variant="outline" className="cc-azul text-white">
             <Link href={`/${params.id}/dashboard/withdraw`}>Withdraw</Link>
           </Button>
         </li>
         <li>
-          <Button variant="outline">
+          <Button variant="outline" className="cc-azul text-white">
             <Link href={`/${params.id}/dashboard/transfer`}>Transfer</Link>
           </Button>
         </li>

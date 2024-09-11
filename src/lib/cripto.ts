@@ -5,6 +5,7 @@ export async function verifySignature(signature: string, message: string) {
     const address = ethers.verifyMessage(message, signature);
     return address;
 }
+
 export async function getBalance(address: string) {
     try {
         const response = await fetch(`http://localhost:5551/balance/${address}`);
@@ -20,7 +21,7 @@ export async function getBalance(address: string) {
     }
 }
 
-export async function deposit(address: string, amount: number) {
+export async function deposit(address: string, amount: number, signature: string) {
     try {
         const response = await fetch('http://localhost:5551/deposit', {
             method: 'POST',
@@ -30,6 +31,7 @@ export async function deposit(address: string, amount: number) {
             body: JSON.stringify({
                 accountId: address,
                 amount: amount,
+                signature: signature
             }),
         });
 
@@ -45,7 +47,7 @@ export async function deposit(address: string, amount: number) {
         return false;
     }
 }
-export async function withdraw(address: string, amount: number) {
+export async function withdraw(address: string, amount: number, signature: string) {
     try {
         const response = await fetch('http://localhost:5551/withdraw', {
             method: 'POST',
@@ -55,6 +57,7 @@ export async function withdraw(address: string, amount: number) {
             body: JSON.stringify({
                 accountId: address,
                 amount: amount,
+                signature: signature
             }),
         });
 
@@ -72,7 +75,7 @@ export async function withdraw(address: string, amount: number) {
 }
 
 
-export async function transfer(sender: string, recipient: string, amount: number) {
+export async function transfer(sender: string, recipient: string, amount: number, signature: string) {
     // Add logic here to transfer 'amount' from 'sender' to 'recipient'
     try {
         const response = await fetch('http://localhost:5551/transfer', {
@@ -84,7 +87,7 @@ export async function transfer(sender: string, recipient: string, amount: number
                 fromAccountId: sender,
                 toAccountId: recipient,
                 amount: amount,
-                
+                signature: signature
             }),
         });
 

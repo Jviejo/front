@@ -2,6 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+.cc-azul{
+  background-color: #2aaedd;
+}
+.cc-verde{
+  background-color: #61ce70;
+}
+.cc-negro{
+  background-color: #000000;
+}
+.cc-white{
+  background-color: #ffffff;
+}
+.cc-sec-azul-oscuro{
+  background-color: #272c6c;
+}
+.cc-sec-azul-claro{
+  background-color: #4054b2;
+}
+.cc-sec-verde-claro{
+  background-color: #22A455;
+}
+.cc-sec-claro{
+  background-color: #f0f9f2;
+}
+
+
+body {
+  background-color: rgb(135, 185, 61);
+} 
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
 import { useAccount } from "@/components/useAccount";
 import { useRouter } from "next/navigation";
-
+import { useState } from "react";
 function Login() {
   const router = useRouter();
   const {
@@ -14,13 +14,17 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [error, setError] = useState(false);
   const params = useParams();
   const { getWallet, setAccount } = useAccount();
   const onSubmit = async (data: any) => {
-    const wallet = await getWallet(params.id as string, data.password);
-    setAccount(wallet);
+    try {
+      const wallet = await getWallet(params.id as string, data.password);
+      setAccount(wallet);
     router.push(`/${params.id}/dashboard`);
-    console.log(wallet);
+    } catch (error) {
+      setError(true);
+    }
   };
 
   return (
@@ -31,6 +35,7 @@ function Login() {
           <Input type="password" {...register("password")} />
           <Button type="submit">Login</Button>
         </form>
+        {error && <p className="text-red-500">Invalid password</p>}
       </div>
     </div>
   );

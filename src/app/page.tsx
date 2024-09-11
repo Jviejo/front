@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Button } from "@/components/ui/button";
 
@@ -15,18 +15,18 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useState } from "react";
 
-
 export default function Home() {
   const [wallets, setWallets] = useState<any>([]);
   const router = useRouter();
   useEffect(() => {
     const walletKeys = Object.keys((window as any).localStorage).filter((key) =>
       key.startsWith("wallet")
-    );  
+    );
+    walletKeys.sort();
     setWallets(walletKeys);
     console.log("Wallet Keys:", walletKeys);
   }, []);
-  
+
   // async function handleSignMessage() {
   //   const signature = await signMessage("hello");
   //   const address = await verifySignature(signature, "hello");
@@ -37,15 +37,30 @@ export default function Home() {
   // }
 
   function getAddress(key: string) {
-    const wallet = JSON.parse((window as any).localStorage.getItem(key) || "{}");
+    const wallet = JSON.parse(
+      (window as any).localStorage.getItem(key) || "{}"
+    );
     return wallet.address;
   }
-  
 
   return (
-    <div className="container mx-auto">
-      <Button onClick={() => router.push("/addWallet")}>Add</Button>
-
+    <div className="container mx-auto flex flex-col gap-4">
+      <div>
+        <Button onClick={() => router.push("/addWallet")}>Add</Button>
+        <Button
+          onClick={() => {
+            const walletKeys = Object.keys(localStorage).filter((key) =>
+              key.startsWith("wallet")
+            );
+            walletKeys.forEach((key) => localStorage.removeItem(key));
+            setWallets([]);
+          }}
+          className="ml-2"
+          variant="destructive"
+        >
+          Delete All Wallets
+        </Button>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -54,19 +69,18 @@ export default function Home() {
           </TableRow>
         </TableHeader>
         <TableBody>
-
-          { wallets.map((key: any) => {
-              return (
-                <TableRow key={key}>
-                  <TableCell>
-                    <Button variant="outline">
-                      <Link href={`/${key}/login`}>{key}</Link>
-                    </Button>
-                  </TableCell>
-                  <TableCell>0x{getAddress(key)}</TableCell>
-                </TableRow>
-              );
-            })}
+          {wallets.map((key: any) => {
+            return (
+              <TableRow key={key}>
+                <TableCell>
+                  <Button variant="outline">
+                    <Link href={`/${key}/login`}>{key}</Link>
+                  </Button>
+                </TableCell>
+                <TableCell>0x{getAddress(key)}</TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>

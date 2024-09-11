@@ -20,15 +20,14 @@ export const useAccount = () => {
     // setAccount({ wallet: JSON.parse(encryptedWallet) });
   }
 
-  async function signMessage(message: string) {
-    console.log("wallet", account.wallet, JSON.stringify(account.wallet));
-    const wallet = ethers.Wallet.fromEncryptedJsonSync(
-      JSON.stringify(account.wallet),
-      "password"
-    );
-
-    const signedMessage = await wallet.signMessage(message);
-    return signedMessage;
+  async function signMessage(message: {}) {
+    console.log("account", account);
+    if (!account) {
+      throw new Error("No account or wallet available");
+    }
+    const wallet = new ethers.Wallet(account.privateKey);
+    const signedMessage = await wallet.signMessage(JSON.stringify(message));
+    return signedMessage; 
   }
 
   async function getWallet(nombre: string, password: string) {

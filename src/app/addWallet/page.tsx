@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAccount } from "@/components/useAccount";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 function AddWallet() {
   const { generateWallet } = useAccount();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -17,7 +18,11 @@ function AddWallet() {
 
   const onSubmit = async (data: any) => {
     await generateWallet(data.walletName, data.password);
-    console.log(data);
+    // Import the useRouter hook from Next.js
+    
+
+    // After generating the wallet, redirect to the home page
+    router.push('/');
   };
 
   return (

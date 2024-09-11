@@ -13,10 +13,10 @@
 
 #### Arquitectura de la solucion
 
-- Webserver
+- Webserver NextJS
 - Api nodejs Express
-- Chaincode
-- Red de fabric
+- Chaincode NodeJS
+- Red de fabric.
 
 ### Practica
 
@@ -28,15 +28,42 @@
 ### Creacion de la red
 
 ```bash
+ ./network.sh down # por si tenemos una red levantada
  ./network.sh up createChannel  -c mychannel
- ./network.sh deployCCAAS  \
-   -ccn basicts \
-   -ccp ../asset-transfer-basic/chaincode-typescript
-./network.sh deployCCAAS --ccn basic ../    asset-transfer-basic/chaincode-external/asset-transfer-basic-external.tgz
+ # antes de lanzar el siguiente comando crear el tunel ngrok y poner la direccion 
+ # cat > "$tempdir/src/connection.json" <<CONN_EOF
+ # {
+ #  "address": "7.tcp.eu.ngrok.io:18159", # tunel ngrok
+ #  "dial_timeout": "10s",
+ #  "tls_required": false
+ # }
+CONN_EOF
+./network.sh deployCCAAS  -ccn basicts -ccp ../asset-transfer-basic/chaincode-typescript
+
 ```
+
+### Tunel
+Con ngrok 
+
+```
+ngrok tcp 9999
+```
+### usando una ip
+
+```
+sudo ifconfig lo0 alias 172.16.123.1
+```
+
+### export para el lanzamiento del smart contract
 
 Obtenemos el id del chaincode
 _basicts_1.0:a50a2c3b1ca76873fdca1fc29fe250df77f398e478de7c182f11d5803ea05d0b_
+
+exportar el id con la variable CHAINCODE_ID
+
+exportar la ip:port en CHAINCODE_SERVER_ADDRESS=localhost:9999 or cc1:9999 or 0.0.0.0:9999
+
+Parar y levantar el servidor el chaincode y el del api
 
 ### Parar la red
 
@@ -52,7 +79,8 @@ Para construir el chaincode
 const { Contract } = require("fabric-contract-api");
 // extendemos de ls clase Contract de fabric
 class BankChaincode extends Contract {
-  // aqui metemos las funciones del contrato
+
+    // aqui metemos las funciones del contrato
 }
 ```
 

@@ -19,13 +19,11 @@ function Movients() {
       const movements = await getAccountMovements(account.address as string);
       setMovements(movements.sort((a: any, b: any) => b.timestamp - a.timestamp));
     };
-    console.log(account.address);
     fetchMovements();
   }, [account.address]);
-  console.log(movements, account.address);
   return (
     <div className="w-full">
-      <h1 className="text-xl  mb-4">Account Moviments</h1>
+      <h1 className="text-xl  mb-4">Account Movements</h1>
       <Table className="w-full">
         <TableHeader>
           <TableRow>
@@ -34,16 +32,18 @@ function Movients() {
             <TableHead>Account</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Balance</TableHead>
+            <TableHead>Signature</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {movements.map((movement: any, index: number) => (
             <TableRow key={index}>
-              <TableCell>{movement.timestamp}</TableCell>
+              <TableCell>{movement.timestamp.substring(0, 10)} {movement.timestamp.substring(11, 19)}</TableCell>
               <TableCell>{movement.type}</TableCell>
               <TableCell>{movement.fromAccount || movement.toAccount}</TableCell>
               <TableCell>{movement.amount}</TableCell>
               <TableCell>{movement.balance}</TableCell>
+              <TableCell>{movement.signature}</TableCell>
             </TableRow>
           ))}
         </TableBody>
