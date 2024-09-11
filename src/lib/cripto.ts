@@ -8,7 +8,7 @@ export async function verifySignature(signature: string, message: string) {
 
 export async function getBalance(address: string) {
     try {
-        const response = await fetch(`http://localhost:5551/balance/${address}`);
+        const response = await fetch(`${process.env.API}/balance/${address}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -23,7 +23,7 @@ export async function getBalance(address: string) {
 
 export async function deposit(address: string, amount: number, signature: string) {
     try {
-        const response = await fetch('http://localhost:5551/deposit', {
+        const response = await fetch(`${process.env.API}/deposit`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export async function deposit(address: string, amount: number, signature: string
 }
 export async function withdraw(address: string, amount: number, signature: string) {
     try {
-        const response = await fetch('http://localhost:5551/withdraw', {
+        const response = await fetch(`${process.env.API}/withdraw`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export async function withdraw(address: string, amount: number, signature: strin
 export async function transfer(sender: string, recipient: string, amount: number, signature: string) {
     // Add logic here to transfer 'amount' from 'sender' to 'recipient'
     try {
-        const response = await fetch('http://localhost:5551/transfer', {
+        const response = await fetch(`${process.env.API}/transfer`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -106,9 +106,9 @@ export async function transfer(sender: string, recipient: string, amount: number
 }
 
 export async function getAccountMovements(accountId: string) {
-    console.log("url", `http://localhost:5551/account/${accountId}/movements?timestamp=`)
+    console.log("url", `${process.env.API}/account/${accountId}/movements?timestamp=`)
     try {
-        const response = await fetch(`http://localhost:5551/account/${accountId}/movements?timestamp=`, {
+        const response = await fetch(`${process.env.API}/account/${accountId}/movements?timestamp=`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
